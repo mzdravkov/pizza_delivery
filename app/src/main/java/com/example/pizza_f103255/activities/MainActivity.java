@@ -1,9 +1,11 @@
-package com.example.pizza_f103255;
+package com.example.pizza_f103255.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
+import com.example.pizza_f103255.R;
+import com.example.pizza_f103255.fragments.LoadDataFragment;
 import com.example.pizza_f103255.fragments.ProductListFragment;
 
 public class MainActivity extends AppCompatActivity {

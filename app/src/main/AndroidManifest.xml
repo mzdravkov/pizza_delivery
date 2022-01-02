@@ -4,6 +4,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
+        android:name=".PizzaApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -12,7 +13,7 @@
         android:networkSecurityConfig="@xml/network_security_config"
         android:theme="@style/Theme.Pizza_F103255">
         <activity
-            android:name=".MainActivity"
+            android:name=".activities.LoadingActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,6 +21,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:label="@string/app_name" android:name=".activities.MainActivity"/>
     </application>
 
 </manifest>

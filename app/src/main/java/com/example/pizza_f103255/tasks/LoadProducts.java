@@ -3,13 +3,17 @@ package com.example.pizza_f103255.tasks;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+
+import androidx.annotation.RequiresApi;
 
 import com.example.pizza_f103255.R;
 import com.example.pizza_f103255.adapters.ProductItemAdapter;
 import com.example.pizza_f103255.entities.ProductItem;
 import com.example.pizza_f103255.entities.ProductList;
+import com.example.pizza_f103255.fragments.LoadDataFragment;
 import com.example.pizza_f103255.fragments.ProductListFragment;
 
 import org.json.JSONArray;
@@ -25,23 +29,27 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 public class LoadProducts extends AsyncTask<String, Void, ProductList> {
-    private ProgressDialog progressDialog;
-    private Context context;
-    private ListView listView;
-    private ProductListFragment fragment;
+//    private ProgressDialog progressDialog;
+//    private Context context;
+//    private ListView listView;
+//    private LoadDataFragment fragment;
+    private Function<ProductList, Void> onCompleteCallback;
 
-    public LoadProducts(Context context, ListView listView, ProductListFragment fragment) {
-        this.context = context;
-        this.listView = listView;
-        this.fragment = fragment;
+//    public LoadProducts(Context context, ListView listView, LoadDataFragment fragment) {
+    public LoadProducts(Function<ProductList, Void> onCompleteCallback) {
+//        this.context = context;
+//        this.listView = listView;
+//        this.fragment = fragment;
+        this.onCompleteCallback = onCompleteCallback;
     }
 
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        progressDialog = ProgressDialog.show(context, "Please wait","Loading products...", true);
+//        progressDialog = ProgressDialog.show(context, "Please wait","Loading products...", true);
     }
 
     @Override
@@ -59,13 +67,16 @@ public class LoadProducts extends AsyncTask<String, Void, ProductList> {
         return null;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onPostExecute (ProductList result){
         super.onPostExecute(result);
-        progressDialog.dismiss();
-        ArrayAdapter<ProductItem> adapter = new ProductItemAdapter(context, R.layout.products_list, result.products);
-        listView.setAdapter(adapter);
-        fragment.setProductList(result);
+//        progressDialog.dismiss();
+//        ArrayAdapter<ProductItem> adapter = new ProductItemAdapter(context, R.layout.products_list, result.products);
+//        listView.setAdapter(adapter);
+//        fragment.setProductList(result);
+//        fragment.finishLoading();
+        onCompleteCallback.apply(result);
     }
 
     private InputStream getRequest(String url) throws IOException {
