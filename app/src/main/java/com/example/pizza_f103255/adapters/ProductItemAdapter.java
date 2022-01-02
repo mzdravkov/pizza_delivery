@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -29,7 +28,7 @@ public class ProductItemAdapter extends ArrayAdapter<ProductItem> {
         View listItemView = convertView;
         if (listItemView == null) {
             listItemView = LayoutInflater.from(
-                    getContext()).inflate(R.layout.product_item, parent, false);
+                    getContext()).inflate(R.layout.product_list_item, parent, false);
         }
 
         ProductItem currentProduct = getItem(position);

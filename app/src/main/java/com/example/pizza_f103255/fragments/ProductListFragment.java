@@ -10,6 +10,7 @@ import android.widget.ListView;
 import androidx.fragment.app.Fragment;
 
 import com.example.pizza_f103255.R;
+import com.example.pizza_f103255.entities.ProductItem;
 import com.example.pizza_f103255.entities.ProductList;
 import com.example.pizza_f103255.tasks.LoadProducts;
 
@@ -18,25 +19,15 @@ import com.example.pizza_f103255.tasks.LoadProducts;
  */
 public class ProductListFragment extends Fragment {
     private static final String PRODUCTS = "products";
+
     private ProductList productList;
 
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
     public ProductListFragment() {
     }
 
-//    @SuppressWarnings("unused")
-//    public static ProductListFragment newInstance(ProductList productList) {
-//        ProductListFragment fragment = new ProductListFragment();
-//        Bundle args = new Bundle();
-//        args.putInt(ARG_COLUMN_COUNT, 2);
-//
-//        args.putSerializable(PRODUCTS, productList);
-//        fragment.setArguments(args);
-//        return fragment;
-//    }
+    public void setProductList(ProductList productList) {
+        this.productList = productList;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -54,7 +45,7 @@ public class ProductListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_item_list, container, false);
+        View view = inflater.inflate(R.layout.products_list, container, false);
         Context context = view.getContext();
 
         ListView listView = (ListView) view.findViewById(R.id.productList);
@@ -67,8 +58,19 @@ public class ProductListFragment extends Fragment {
 //            args.putSerializable(PRODUCTS, productList);
 //            setArguments(args);
 //        }
-        LoadProducts loadProducts = new LoadProducts(context, listView);
+        LoadProducts loadProducts = new LoadProducts(context, listView, this);
         loadProducts.execute("http://10.0.2.2:5000");
+
+        listView.setOnItemClickListener((parent, clickedView, position, id) -> {
+            ProductItem clickedProduct = productList.products.get(position);
+            ProductDetails productDetailsFragment = new ProductDetails(clickedProduct);
+            getActivity()
+                    .getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container_view, productDetailsFragment, "productDetails")
+                    .addToBackStack(null)
+                    .commit();
+        });
 
         return view;
     }

@@ -10,6 +10,7 @@ import com.example.pizza_f103255.R;
 import com.example.pizza_f103255.adapters.ProductItemAdapter;
 import com.example.pizza_f103255.entities.ProductItem;
 import com.example.pizza_f103255.entities.ProductList;
+import com.example.pizza_f103255.fragments.ProductListFragment;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -29,10 +30,12 @@ public class LoadProducts extends AsyncTask<String, Void, ProductList> {
     private ProgressDialog progressDialog;
     private Context context;
     private ListView listView;
+    private ProductListFragment fragment;
 
-    public LoadProducts(Context context, ListView listView) {
+    public LoadProducts(Context context, ListView listView, ProductListFragment fragment) {
         this.context = context;
         this.listView = listView;
+        this.fragment = fragment;
     }
 
     @Override
@@ -44,10 +47,7 @@ public class LoadProducts extends AsyncTask<String, Void, ProductList> {
     @Override
     protected ProductList doInBackground(String... urls) {
         try {
-            System.out.println("@!# !@# !@#");
             InputStream responseStream = getRequest(urls[0]);
-            System.out.println("@!# !@#");
-            System.out.println(responseStream);
             return parseResponse(responseStream);
         } catch (IOException e) {
             // TODO handle exception
@@ -63,8 +63,9 @@ public class LoadProducts extends AsyncTask<String, Void, ProductList> {
     protected void onPostExecute (ProductList result){
         super.onPostExecute(result);
         progressDialog.dismiss();
-        ArrayAdapter<ProductItem> adapter = new ProductItemAdapter(context, R.layout.fragment_item_list, result.products);
+        ArrayAdapter<ProductItem> adapter = new ProductItemAdapter(context, R.layout.products_list, result.products);
         listView.setAdapter(adapter);
+        fragment.setProductList(result);
     }
 
     private InputStream getRequest(String url) throws IOException {
@@ -86,8 +87,6 @@ public class LoadProducts extends AsyncTask<String, Void, ProductList> {
             response = sb.toString();
         }
 
-        System.out.println("!@#");
-        System.out.println(response);
         JSONArray array = new JSONArray(response);
 
         List<ProductItem> productItems = new ArrayList<>();
