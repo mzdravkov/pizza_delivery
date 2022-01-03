@@ -1,6 +1,9 @@
 package com.example.pizza_f103255.fragments;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -30,7 +33,9 @@ import com.example.pizza_f103255.entities.SupplementList;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 /**
  * Shows the user's basket.
@@ -46,7 +51,7 @@ public class BasketFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -103,7 +108,68 @@ public class BasketFragment extends Fragment {
             refreshFragment();
         });
 
+        Button submitButton = view.findViewById(R.id.finish_order_btn);
+        submitButton.setOnClickListener(v -> showConfirmationDialog(basket, view));
+
         return view;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void showConfirmationDialog(Basket basket, View view) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+        builder
+                .setTitle("Are you sure you want to complete your order?")
+                .setMessage("Pressing \"Yes\" will send the order to the restaurant")
+                .setPositiveButton("Yes", (dialog, id) -> completeOrder(basket, view))
+                .setNegativeButton("Cancel", (dialog, id) -> {});
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void completeOrder(Basket basket, View view) {
+        StringBuilder contentBuilder = new StringBuilder();
+
+        for (Basket.ProductInBasket product : basket.products) {
+            String productText = String.format("%dx %s", product.number, product.product.name);
+            String supplementsText = "";
+
+            if (product.productSupplements != null && product.productSupplements.size() > 0) {
+               List<String> supplementNames =
+                       product.productSupplements
+                               .stream()
+                               .map(supplement -> supplement.name)
+                               .collect(Collectors.toList());
+               supplementsText = " (" + String.join(", ", supplementNames) + ")";
+            }
+           contentBuilder
+                   .append(productText)
+                   .append(supplementsText)
+                   .append("\n");
+        }
+
+        contentBuilder.append("\n\n");
+
+        EditText city = view.findViewById(R.id.address_city_field);
+        contentBuilder.append("City: " + city.getText() + "\n");
+        EditText address = view.findViewById(R.id.detailed_address_field);
+        contentBuilder.append("Address: " + address.getText() + "\n");
+        EditText date = view.findViewById(R.id.delivery_date_field);
+        EditText time = view.findViewById(R.id.delivery_time_field);
+        contentBuilder.append("Delivery by: " + date.getText() + " " + time.getText() + "\n");
+
+        String body = contentBuilder.toString();
+        composeEmail("Order", body);
+    }
+
+    public void composeEmail(String subject, String body) {
+        Intent intent = new Intent(Intent.ACTION_SENDTO);
+        intent.setData(Uri.parse("mailto:orders@examplerestaurant.bg"));
+        intent.putExtra(Intent.EXTRA_SUBJECT, subject);
+        intent.putExtra(Intent.EXTRA_HTML_TEXT, body);
+        startActivity(Intent.createChooser(intent, "Send email using: "));
     }
 
     private void addBasketContentTable(View view, Basket basket) {
