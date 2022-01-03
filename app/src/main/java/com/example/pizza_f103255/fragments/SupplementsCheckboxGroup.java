@@ -16,6 +16,7 @@ import com.example.pizza_f103255.R;
 import com.example.pizza_f103255.entities.Supplement;
 
 public class SupplementsCheckboxGroup extends Fragment {
+    public static final int SUPPLEMENT_ID_TAG = View.generateViewId();
 
     public SupplementsCheckboxGroup() {
     }
@@ -38,6 +39,7 @@ public class SupplementsCheckboxGroup extends Fragment {
         for (Supplement supplement : app.supplementList.supplements) {
             CheckBox checkBox = new CheckBox(context);
             checkBox.setText(supplement.toString());
+            checkBox.setTag(checkBox.getId(), supplement.id);
             listView.addView(checkBox);
         }
 

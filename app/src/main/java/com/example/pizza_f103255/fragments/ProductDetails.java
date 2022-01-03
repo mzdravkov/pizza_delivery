@@ -1,23 +1,31 @@
 package com.example.pizza_f103255.fragments;
 
+import android.os.Build;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewManager;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.annotation.RequiresApi;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.example.pizza_f103255.DBHandler;
+import com.example.pizza_f103255.PizzaApp;
 import com.example.pizza_f103255.R;
 import com.example.pizza_f103255.entities.ProductItem;
+import com.example.pizza_f103255.entities.Supplement;
+import com.example.pizza_f103255.entities.SupplementList;
 import com.example.pizza_f103255.widgets.HorizontalNumberPicker;
 
-import java.util.Collections;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Shows the details of a single product.
@@ -35,6 +43,7 @@ public class ProductDetails extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -57,9 +66,37 @@ public class ProductDetails extends Fragment {
         numberPicker.setMax(100);
 
         DBHandler db = new DBHandler(getContext());
+        PizzaApp app = (PizzaApp) getActivity().getApplication();
+        SupplementList supplementList = app.supplementList;
 
-        Button addToBasket = view.findViewById(R.id.add_to_basket_btn);
-        addToBasket.setOnClickListener(v -> db.addProductToBasket(1, product, Collections.emptyList()));
+        Button addToBasket = view.findViewById(R.id.finish_order_btn);
+        addToBasket.setOnClickListener(v -> {
+            int number = numberPicker.getValue();
+            List<Supplement> supplementForProduct = new ArrayList<>();
+
+            LinearLayout supplementsCheckboxGroup = view.findViewById(R.id.supplements);
+            final int childrenCount = supplementsCheckboxGroup.getChildCount();
+            for (int i = 0; i < childrenCount; i++) {
+                CheckBox checkBox = (CheckBox) supplementsCheckboxGroup.getChildAt(i);
+                if (checkBox.isChecked()) {
+                    int supplementId = (Integer) checkBox.getTag(checkBox.getId());
+                    Supplement supplement = supplementList.supplements
+                            .stream()
+                            .filter(s -> s.id == supplementId)
+                            .findFirst()
+                            .get();
+
+                    supplementForProduct.add(supplement);
+                }
+            }
+            db.addProductToBasket(number, product, supplementForProduct);
+
+            CharSequence text = "Added to basket!";
+            int duration = Toast.LENGTH_SHORT;
+
+            Toast toast = Toast.makeText(getContext(), text, duration);
+            toast.show();
+        });
 
         Button addToFavourites = view.findViewById(R.id.add_favourite_btn);
         boolean isFavourite = db.getFavourites().contains(product.id);
@@ -76,8 +113,6 @@ public class ProductDetails extends Fragment {
                 refreshFragment();
             });
             ViewGroup.LayoutParams layoutParams = addToFavourites.getLayoutParams();
-//            ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(
-//                    ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             parent.addView(btnTag, layoutParams);
             parent.addView(addToBasket, layoutParams);
         } else {

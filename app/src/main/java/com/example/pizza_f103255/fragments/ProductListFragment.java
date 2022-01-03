@@ -11,14 +11,11 @@ import android.widget.ListView;
 
 import androidx.fragment.app.Fragment;
 
-import com.example.pizza_f103255.DBHandler;
 import com.example.pizza_f103255.PizzaApp;
 import com.example.pizza_f103255.R;
 import com.example.pizza_f103255.adapters.ProductItemAdapter;
 import com.example.pizza_f103255.entities.ProductItem;
 import com.example.pizza_f103255.entities.ProductList;
-
-import java.util.Collections;
 
 /**
  * A fragment representing a list of products.
@@ -92,6 +89,17 @@ public class ProductListFragment extends Fragment {
                     .getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.fragment_container_view, favouritesFragment, "favourites")
+                    .addToBackStack(null)
+                    .commit();
+        });
+
+        Button basketButton = view.findViewById(R.id.basket_btn);
+        basketButton.setOnClickListener(v -> {
+            BasketFragment basketFragment = new BasketFragment();
+            getActivity()
+                    .getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container_view, basketFragment, "basket")
                     .addToBackStack(null)
                     .commit();
         });
