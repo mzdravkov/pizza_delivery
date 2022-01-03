@@ -73,7 +73,7 @@ public class ProductListFragment extends Fragment {
 
         listView.setOnItemClickListener((parent, clickedView, position, id) -> {
             ProductItem clickedProduct = productList.products.get(position);
-            ProductDetails productDetailsFragment = new ProductDetails(clickedProduct);
+            ProductDetailsFragment productDetailsFragment = new ProductDetailsFragment(clickedProduct);
             getActivity()
                     .getSupportFragmentManager()
                     .beginTransaction()

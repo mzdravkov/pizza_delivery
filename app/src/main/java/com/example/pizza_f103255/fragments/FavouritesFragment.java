@@ -70,7 +70,7 @@ public class FavouritesFragment extends Fragment {
                     .filter(product -> product.id == productId)
                     .findFirst()
                     .get();
-            ProductDetails productDetailsFragment = new ProductDetails(clickedProduct);
+            ProductDetailsFragment productDetailsFragment = new ProductDetailsFragment(clickedProduct);
             getActivity()
                     .getSupportFragmentManager()
                     .beginTransaction()

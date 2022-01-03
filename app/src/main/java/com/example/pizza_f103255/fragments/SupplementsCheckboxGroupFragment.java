@@ -15,10 +15,10 @@ import com.example.pizza_f103255.PizzaApp;
 import com.example.pizza_f103255.R;
 import com.example.pizza_f103255.entities.Supplement;
 
-public class SupplementsCheckboxGroup extends Fragment {
+public class SupplementsCheckboxGroupFragment extends Fragment {
     public static final int SUPPLEMENT_ID_TAG = View.generateViewId();
 
-    public SupplementsCheckboxGroup() {
+    public SupplementsCheckboxGroupFragment() {
     }
 
     @Override

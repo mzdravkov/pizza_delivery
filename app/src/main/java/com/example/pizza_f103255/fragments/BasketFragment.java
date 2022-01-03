@@ -1,11 +1,16 @@
 package com.example.pizza_f103255.fragments;
 
+import android.app.DatePickerDialog;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -23,11 +28,15 @@ import com.example.pizza_f103255.entities.Supplement;
 import com.example.pizza_f103255.entities.SupplementList;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
 
 /**
  * Shows the user's basket.
  */
 public class BasketFragment extends Fragment {
+    final Calendar calendar = Calendar.getInstance();
 
     public BasketFragment() {
     }
@@ -50,6 +59,54 @@ public class BasketFragment extends Fragment {
         DBHandler db = new DBHandler(getContext());
         Basket basket = db.getBasket(productList, supplementList);
 
+        addBasketContentTable(view, basket);
+
+        Spinner citySpinner = view.findViewById(R.id.city_spinner);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
+                getContext(), R.array.cities, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        citySpinner.setAdapter(adapter);
+
+        EditText city = view.findViewById(R.id.address_city_field);
+
+        citySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
+                String[] cities = getResources().getStringArray(R.array.cities);
+                city.setText(cities[position]);
+            }
+
+            public void onNothingSelected(AdapterView<?> adapterView) {
+            }
+        });
+
+        EditText deliveryDate = view.findViewById(R.id.delivery_date_field);
+        DatePickerDialog.OnDateSetListener date = (ignored, year, month, day) -> {
+            calendar.set(Calendar.YEAR, year);
+            calendar.set(Calendar.MONTH, month);
+            calendar.set(Calendar.DAY_OF_MONTH, day);
+            String format = "dd/MM/yy";
+            SimpleDateFormat dateFormat = new SimpleDateFormat(format, Locale.ENGLISH);
+            deliveryDate.setText(dateFormat.format(calendar.getTime()));
+        };
+        deliveryDate.setOnClickListener(
+                view1 -> new DatePickerDialog(
+                        getContext(),
+                        date,
+                        calendar.get(Calendar.YEAR),
+                        calendar.get(Calendar.MONTH),
+                        calendar.get(Calendar.DAY_OF_MONTH)
+                ).show());
+
+        Button clearBasket = view.findViewById(R.id.clear_basket_btn);
+        clearBasket.setOnClickListener(v -> {
+            db.clearBasket();
+            refreshFragment();
+        });
+
+        return view;
+    }
+
+    private void addBasketContentTable(View view, Basket basket) {
         TableLayout table = view.findViewById(R.id.basket_table);
 
         TableRow titleRow = titleRow();
@@ -76,14 +133,6 @@ public class BasketFragment extends Fragment {
 
         TableRow totalRow = totalRow(total);
         table.addView(totalRow);
-
-        Button clearBasket = view.findViewById(R.id.clear_basket_btn);
-        clearBasket.setOnClickListener(v -> {
-            db.clearBasket();
-            refreshFragment();
-        });
-
-        return view;
     }
 
     private TableRow productToRow(Basket.ProductInBasket product) {

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".fragments.ProductDetails">
+    tools:context=".fragments.ProductDetailsFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -117,7 +117,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:name="com.example.pizza_f103255.fragments.SupplementsCheckboxGroup" />
+            android:name="com.example.pizza_f103255.fragments.SupplementsCheckboxGroupFragment" />
     </LinearLayout>
 
     <Space

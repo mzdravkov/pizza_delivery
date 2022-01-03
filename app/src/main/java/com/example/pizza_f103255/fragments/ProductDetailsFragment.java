@@ -31,10 +31,10 @@ import java.util.List;
  * Shows the details of a single product.
  * Allows adding it to the basket or favourites.
  */
-public class ProductDetails extends Fragment {
+public class ProductDetailsFragment extends Fragment {
     private ProductItem product;
 
-    public ProductDetails(ProductItem product) {
+    public ProductDetailsFragment(ProductItem product) {
         this.product = product;
     }
 
