@@ -33,6 +33,9 @@ public class ProductItemAdapter extends ArrayAdapter<ProductItem> {
 
         ProductItem currentProduct = getItem(position);
 
+        TextView idView = listItemView.findViewById(R.id.id);
+        idView.setText(Integer.toString(currentProduct.id));
+
         TextView nameView = listItemView.findViewById(R.id.name);
         nameView.setText(currentProduct.name);
 

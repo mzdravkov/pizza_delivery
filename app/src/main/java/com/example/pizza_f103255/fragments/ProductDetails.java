@@ -1,16 +1,24 @@
 package com.example.pizza_f103255.fragments;
 
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewManager;
+import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.pizza_f103255.DBHandler;
 import com.example.pizza_f103255.R;
 import com.example.pizza_f103255.entities.ProductItem;
+
+import java.util.Collections;
 
 /**
  * Shows the details of a single product.
@@ -26,10 +34,6 @@ public class ProductDetails extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        if (getArguments() != null) {
-//            mParam1 = getArguments().getString(ARG_PARAM1);
-//            mParam2 = getArguments().getString(ARG_PARAM2);
-//        }
     }
 
     @Override
@@ -49,6 +53,43 @@ public class ProductDetails extends Fragment {
         TextView priceView =  view.findViewById(R.id.price);
         priceView.setText(product.price.toString() + " лв.");
 
+        DBHandler db = new DBHandler(getContext());
+
+        Button addToBasket = view.findViewById(R.id.add_to_basket_btn);
+        addToBasket.setOnClickListener(v -> db.addProductToBasket(1, product, Collections.emptyList()));
+
+        Button addToFavourites = view.findViewById(R.id.add_favourite_btn);
+        boolean isFavourite = db.getFavourites().contains(product.id);
+
+        if (isFavourite) {
+            ViewManager parent = ((ViewManager) addToFavourites.getParent());
+            parent.removeView(addToFavourites);
+            parent.removeView(addToBasket);
+            Button btnTag = new Button(getContext());
+            btnTag.setId(View.generateViewId());
+            btnTag.setText("Remove from favourites");
+            btnTag.setOnClickListener(v -> {
+                db.removeProductFromFavourites(product);
+                refreshFragment();
+            });
+            ViewGroup.LayoutParams layoutParams = addToFavourites.getLayoutParams();
+//            ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(
+//                    ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            parent.addView(btnTag, layoutParams);
+            parent.addView(addToBasket, layoutParams);
+        } else {
+            addToFavourites.setOnClickListener(v -> {
+                db.addProductToFavourites(product);
+                refreshFragment();
+            });
+        }
+
         return view;
+    }
+
+    private void refreshFragment() {
+        FragmentManager fm = getActivity().getSupportFragmentManager();
+        fm.beginTransaction().detach(this).commit();
+        fm.beginTransaction().attach(this).commit();
     }
 }

@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".fragments.ProductDetails">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:layout_marginBottom="5dp"
+        android:layout_weight="1"
         android:orientation="horizontal">
 
         <ImageView
@@ -46,9 +48,9 @@
                     android:id="@+id/price"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:gravity="end"
                     android:layout_marginEnd="5dp"
-                    android:layout_weight="1" />
+                    android:layout_weight="1"
+                    android:gravity="end" />
             </LinearLayout>
 
             <TextView
@@ -60,8 +62,46 @@
                 android:id="@+id/description"
                 android:layout_width="match_parent"
                 android:layout_height="90dp"
-                android:layout_marginTop="10dp"/>
+                android:layout_marginTop="10dp" />
 
         </LinearLayout>
+
     </LinearLayout>
-</FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/bottom_nav"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal">
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.1" />
+
+        <Button
+            android:id="@+id/add_favourite_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2"
+            android:text="Add to favourites" />
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.1" />
+
+        <Button
+            android:id="@+id/add_to_basket_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Add to basket" />
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.1" />
+
+    </LinearLayout>
+</LinearLayout>
