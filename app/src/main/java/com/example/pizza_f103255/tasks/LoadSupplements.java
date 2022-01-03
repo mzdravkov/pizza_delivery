@@ -1,7 +1,7 @@
 package com.example.pizza_f103255.tasks;
 
-import com.example.pizza_f103255.entities.ProductItem;
-import com.example.pizza_f103255.entities.ProductList;
+import com.example.pizza_f103255.entities.Supplement;
+import com.example.pizza_f103255.entities.SupplementList;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -12,28 +12,26 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
-public class LoadProducts extends LoadData<ProductList> {
-    public LoadProducts(Function<ProductList, Void> onCompleteCallback) {
+public class LoadSupplements extends LoadData<SupplementList> {
+    public LoadSupplements(Function<SupplementList, Void> onCompleteCallback) {
         this.onCompleteCallback = onCompleteCallback;
     }
 
     @Override
-    protected ProductList parseJSON(String response) throws JSONException {
+    protected SupplementList parseJSON(String response) throws JSONException {
         JSONArray array = new JSONArray(response);
 
-        List<ProductItem> productItems = new ArrayList<>();
+        List<Supplement> supplements = new ArrayList<>();
         for (int i = 0; i < array.length(); i++) {
             JSONObject obj = array.getJSONObject(i);
-            ProductItem productItem = new ProductItem(
+            Supplement supplement = new Supplement(
                     obj.getInt("id"),
                     obj.getString("name"),
-                    obj.getString("description"),
-                    obj.getString("image"),
                     obj.getString("size"),
                     BigDecimal.valueOf(obj.getDouble("price"))
             );
-            productItems.add(productItem);
+            supplements.add(supplement);
         }
-        return new ProductList(productItems);
+        return new SupplementList(supplements);
     }
 }

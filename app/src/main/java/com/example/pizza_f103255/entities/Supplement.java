@@ -14,4 +14,9 @@ public class Supplement {
         this.size = size;
         this.price = price;
     }
+
+    @Override
+    public String toString() {
+        return String.format("%s (%s) - %s", name, size, price);
+    }
 }

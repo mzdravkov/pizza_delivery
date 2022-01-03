@@ -1,23 +1,21 @@
 package com.example.pizza_f103255.fragments;
 
-import android.os.Build;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewManager;
 import android.widget.Button;
-import android.widget.NumberPicker;
 import android.widget.TextView;
 
 import com.example.pizza_f103255.DBHandler;
 import com.example.pizza_f103255.R;
 import com.example.pizza_f103255.entities.ProductItem;
+import com.example.pizza_f103255.widgets.HorizontalNumberPicker;
 
 import java.util.Collections;
 

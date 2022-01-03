@@ -85,14 +85,14 @@
             android:layout_width="match_parent"
             android:layout_height="15dp"/>
 
-        <com.example.pizza_f103255.fragments.HorizontalNumberPicker
+        <com.example.pizza_f103255.widgets.HorizontalNumberPicker
             android:id="@+id/number_picker"
             android:layout_width="140dp"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:layout_gravity="center"
             android:layout_weight="0.1">
-        </com.example.pizza_f103255.fragments.HorizontalNumberPicker>
+        </com.example.pizza_f103255.widgets.HorizontalNumberPicker>
 
         <Space
             android:layout_width="match_parent"
@@ -110,6 +110,14 @@
         <Space
             android:layout_width="match_parent"
             android:layout_height="15dp"/>
+
+        <androidx.fragment.app.FragmentContainerView
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/fragment_container_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:name="com.example.pizza_f103255.fragments.SupplementsCheckboxGroup" />
     </LinearLayout>
 
     <Space

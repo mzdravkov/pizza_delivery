@@ -1,4 +1,4 @@
-package com.example.pizza_f103255.fragments;
+package com.example.pizza_f103255.widgets;
 
 import android.content.Context;
 import android.util.AttributeSet;
