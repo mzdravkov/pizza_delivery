@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewManager;
 import android.widget.Button;
+import android.widget.NumberPicker;
 import android.widget.TextView;
 
 import com.example.pizza_f103255.DBHandler;
@@ -44,14 +45,18 @@ public class ProductDetails extends Fragment {
         TextView nameView = view.findViewById(R.id.name);
         nameView.setText(product.name);
 
-        TextView descriptionView =  view.findViewById(R.id.description);
+        TextView descriptionView = view.findViewById(R.id.description);
         descriptionView.setText(product.description);
 
-        TextView sizeView =  view.findViewById(R.id.size);
+        TextView sizeView = view.findViewById(R.id.size);
         sizeView.setText(product.size);
 
-        TextView priceView =  view.findViewById(R.id.price);
+        TextView priceView = view.findViewById(R.id.price);
         priceView.setText(product.price.toString() + " лв.");
+
+        HorizontalNumberPicker numberPicker = view.findViewById(R.id.number_picker);
+        numberPicker.setMin(0);
+        numberPicker.setMax(100);
 
         DBHandler db = new DBHandler(getContext());
 
