@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 
 import androidx.fragment.app.Fragment;
@@ -78,28 +77,6 @@ public class ProductListFragment extends Fragment {
                     .getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.fragment_container_view, productDetailsFragment, "productDetails")
-                    .addToBackStack(null)
-                    .commit();
-        });
-
-        Button showFavourites = view.findViewById(R.id.favourites_btn);
-        showFavourites.setOnClickListener(v -> {
-            FavouritesFragment favouritesFragment = new FavouritesFragment();
-            getActivity()
-                    .getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.fragment_container_view, favouritesFragment, "favourites")
-                    .addToBackStack(null)
-                    .commit();
-        });
-
-        Button basketButton = view.findViewById(R.id.basket_btn);
-        basketButton.setOnClickListener(v -> {
-            BasketFragment basketFragment = new BasketFragment();
-            getActivity()
-                    .getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.fragment_container_view, basketFragment, "basket")
                     .addToBackStack(null)
                     .commit();
         });
