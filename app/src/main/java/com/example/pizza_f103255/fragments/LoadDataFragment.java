@@ -21,6 +21,7 @@ import com.example.pizza_f103255.tasks.LoadSupplements;
  * while it loads the data from the back-end.
  */
 public class LoadDataFragment extends Fragment {
+    public static final String SERVER_ADDRESS = "https://nbu-pizza-backend.herokuapp.com";
 
     public LoadDataFragment() {
     }
@@ -47,11 +48,11 @@ public class LoadDataFragment extends Fragment {
                 getActivity().finish();
                 return null;
             });
-            loadSupplements.execute("http://10.0.2.2:5000/supplements");
+            loadSupplements.execute(SERVER_ADDRESS + "/supplements");
 
             return null;
         });
-        loadProducts.execute("http://10.0.2.2:5000/pizzas");
+        loadProducts.execute(SERVER_ADDRESS + "/pizzas");
 
         return view;
     }

@@ -41,6 +41,8 @@ import java.util.stream.Collectors;
  * Shows the user's basket.
  */
 public class BasketFragment extends Fragment {
+    public static final String RESTAURANT_EMAIL = "orders@examplerestaurant.bg";
+
     final Calendar calendar = Calendar.getInstance();
 
     public BasketFragment() {
@@ -160,16 +162,23 @@ public class BasketFragment extends Fragment {
         EditText time = view.findViewById(R.id.delivery_time_field);
         contentBuilder.append("Delivery by: " + date.getText() + " " + time.getText() + "\n");
 
+        view.findViewById(R.id.finish_order_btn).setEnabled(false);
+
         String body = contentBuilder.toString();
         composeEmail("Order", body);
     }
 
     public void composeEmail(String subject, String body) {
-        Intent intent = new Intent(Intent.ACTION_SENDTO);
-        intent.setData(Uri.parse("mailto:orders@examplerestaurant.bg"));
-        intent.putExtra(Intent.EXTRA_SUBJECT, subject);
-        intent.putExtra(Intent.EXTRA_HTML_TEXT, body);
-        startActivity(Intent.createChooser(intent, "Send email using: "));
+        Intent selectorIntent = new Intent(Intent.ACTION_SENDTO);
+        selectorIntent.setData(Uri.parse("mailto:" + RESTAURANT_EMAIL));
+
+        final Intent emailIntent = new Intent(Intent.ACTION_SEND);
+        emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{RESTAURANT_EMAIL});
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, subject);
+        emailIntent.putExtra(Intent.EXTRA_TEXT, body);
+        emailIntent.setSelector(selectorIntent);
+
+        getActivity().startActivity(Intent.createChooser(emailIntent, "Send email..."));
     }
 
     private void addBasketContentTable(View view, Basket basket) {
