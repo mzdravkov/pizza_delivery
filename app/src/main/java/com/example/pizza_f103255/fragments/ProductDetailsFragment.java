@@ -23,6 +23,7 @@ import com.example.pizza_f103255.R;
 import com.example.pizza_f103255.entities.ProductItem;
 import com.example.pizza_f103255.entities.Supplement;
 import com.example.pizza_f103255.entities.SupplementList;
+import com.example.pizza_f103255.tasks.DownloadProductImage;
 import com.example.pizza_f103255.widgets.HorizontalNumberPicker;
 
 import java.util.ArrayList;
@@ -64,6 +65,8 @@ public class ProductDetailsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        PizzaApp app = (PizzaApp) getActivity().getApplication();
+
         View view = inflater.inflate(R.layout.product_details, container, false);
 
         TextView nameView = view.findViewById(R.id.name);
@@ -78,12 +81,14 @@ public class ProductDetailsFragment extends Fragment {
         TextView priceView = view.findViewById(R.id.price);
         priceView.setText(product.price.toString() + " лв.");
 
+        view.setTag(R.id.product_id, product.id);
+        new DownloadProductImage(view, product.id, app.productToImage).execute(product.imageUrl);
+
         HorizontalNumberPicker numberPicker = view.findViewById(R.id.number_picker);
         numberPicker.setMin(0);
         numberPicker.setMax(100);
 
         DBHandler db = new DBHandler(getContext());
-        PizzaApp app = (PizzaApp) getActivity().getApplication();
         SupplementList supplementList = app.supplementList;
 
         Button addToBasket = view.findViewById(R.id.add_to_basket_btn);

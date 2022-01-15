@@ -8,9 +8,9 @@ import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 
-import com.example.pizza_f103255.activities.MainActivity;
 import com.example.pizza_f103255.PizzaApp;
 import com.example.pizza_f103255.R;
+import com.example.pizza_f103255.activities.MainActivity;
 import com.example.pizza_f103255.entities.ProductList;
 import com.example.pizza_f103255.entities.SupplementList;
 import com.example.pizza_f103255.tasks.LoadProducts;

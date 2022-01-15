@@ -9,7 +9,7 @@
         android:layout_width="0sp"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:text="-"
+        android:text="@string/minus"
         android:textSize="14sp" />
 
     <EditText
@@ -20,13 +20,13 @@
         android:textAlignment="center"
         android:inputType="number"
         android:textSize="14sp"
-        android:text="1" />
+        android:text="@string/one" />
 
     <Button
         android:id="@+id/btn_up"
         android:layout_width="0sp"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:text="+"
+        android:text="@string/plus"
         android:textSize="14sp" />
 </LinearLayout>

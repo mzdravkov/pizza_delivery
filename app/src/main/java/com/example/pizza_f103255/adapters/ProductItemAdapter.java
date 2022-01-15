@@ -1,26 +1,33 @@
 package com.example.pizza_f103255.adapters;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
 import com.example.pizza_f103255.R;
 import com.example.pizza_f103255.entities.ProductItem;
+import com.example.pizza_f103255.tasks.DownloadProductImage;
 
-import java.io.InputStream;
-import java.net.URL;
 import java.util.List;
+import java.util.concurrent.ConcurrentMap;
 
 public class ProductItemAdapter extends ArrayAdapter<ProductItem> {
+    ConcurrentMap<Integer, Bitmap> bitmaps;
 
-    public ProductItemAdapter(@NonNull Context context, int resource, @NonNull List<ProductItem> products) {
+    public ProductItemAdapter(
+            @NonNull Context context,
+            int resource,
+            @NonNull List<ProductItem> products,
+            ConcurrentMap<Integer, Bitmap> bitmaps) {
         super(context, resource, products);
+        this.bitmaps = bitmaps;
     }
 
     @Override
@@ -48,19 +55,13 @@ public class ProductItemAdapter extends ArrayAdapter<ProductItem> {
         TextView priceView =  listItemView.findViewById(R.id.price);
         priceView.setText(currentProduct.price.toString() + " лв.");
 
-//        ImageView imageView = listItemView.findViewById(R.id.productImage);
-//        imageView.setImageURI();
+        listItemView.setTag(R.id.product_id, currentProduct.id);
+        ImageView imageView = listItemView.findViewById(R.id.product_image);
+        imageView.setImageBitmap(null);
+        new DownloadProductImage(
+                listItemView, currentProduct.id, bitmaps).execute(currentProduct.imageUrl);
+
 
         return listItemView;
-    }
-
-    public static Drawable loadImageFromWebOperations(String url) {
-        try {
-            InputStream is = (InputStream) new URL(url).getContent();
-            Drawable d = Drawable.createFromStream(is, "src name");
-            return d;
-        } catch (Exception e) {
-            return null;
-        }
     }
 }

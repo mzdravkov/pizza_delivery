@@ -59,7 +59,8 @@ public class FavouritesFragment extends Fragment {
                 .collect(Collectors.toList());
 
         Context context = view.getContext();
-        ArrayAdapter<ProductItem> adapter = new ProductItemAdapter(context, R.layout.products_list, favouriteProducts);
+        ArrayAdapter<ProductItem> adapter = new ProductItemAdapter(
+                context, R.layout.products_list, favouriteProducts, app.productToImage);
         listView.setAdapter(adapter);
 
         listView.setOnItemClickListener((parent, clickedView, position, id) -> {

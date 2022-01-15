@@ -39,7 +39,8 @@ public class ProductListFragment extends Fragment {
         PizzaApp app = (PizzaApp) getActivity().getApplication();
         ProductList productList = app.productList;
 
-        ArrayAdapter<ProductItem> adapter = new ProductItemAdapter(context, R.layout.products_list, productList.products);
+        ArrayAdapter<ProductItem> adapter = new ProductItemAdapter(
+                context, R.layout.products_list, productList.products, app.productToImage);
         listView.setAdapter(adapter);
 
         listView.setOnItemClickListener((parent, clickedView, position, id) -> {
