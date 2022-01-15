@@ -2,6 +2,7 @@ package com.example.pizza_f103255.fragments;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +33,12 @@ import java.util.List;
  * Allows adding it to the basket or favourites.
  */
 public class ProductDetailsFragment extends Fragment {
+    private static final String PRODUCT_KEY = "product";
+
     private ProductItem product;
+
+    public ProductDetailsFragment() {
+    }
 
     public ProductDetailsFragment(ProductItem product) {
         this.product = product;
@@ -41,6 +47,17 @@ public class ProductDetailsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (savedInstanceState != null) {
+            product = (ProductItem) savedInstanceState.getSerializable(PRODUCT_KEY);
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        savedInstanceState.putSerializable(PRODUCT_KEY, product);
+
+        super.onSaveInstanceState(savedInstanceState);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -69,7 +86,7 @@ public class ProductDetailsFragment extends Fragment {
         PizzaApp app = (PizzaApp) getActivity().getApplication();
         SupplementList supplementList = app.supplementList;
 
-        Button addToBasket = view.findViewById(R.id.finish_order_btn);
+        Button addToBasket = view.findViewById(R.id.add_to_basket_btn);
         addToBasket.setOnClickListener(v -> {
             int number = numberPicker.getValue();
             List<Supplement> supplementForProduct = new ArrayList<>();
@@ -108,6 +125,7 @@ public class ProductDetailsFragment extends Fragment {
             Button btnTag = new Button(getContext());
             btnTag.setId(View.generateViewId());
             btnTag.setText("Remove from favourites");
+            btnTag.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
             btnTag.setOnClickListener(v -> {
                 db.removeProductFromFavourites(product);
                 refreshFragment();

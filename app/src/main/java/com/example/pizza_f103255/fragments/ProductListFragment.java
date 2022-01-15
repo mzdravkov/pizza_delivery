@@ -20,28 +20,12 @@ import com.example.pizza_f103255.entities.ProductList;
  * A fragment representing a list of products.
  */
 public class ProductListFragment extends Fragment {
-    private static final String PRODUCTS = "products";
-
-    private ProductList productList;
-
     public ProductListFragment() {
-    }
-
-    public void setProductList(ProductList productList) {
-        this.productList = productList;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-//        if (getArguments() != null) {
-//            productList = (ProductList) getArguments().getSerializable(PRODUCTS);
-//        } else {
-//            Bundle args = new Bundle();
-//            args.putSerializable(PRODUCTS, productList);
-//            setArguments(args);
-//        }
     }
 
     @Override
@@ -57,18 +41,6 @@ public class ProductListFragment extends Fragment {
 
         ArrayAdapter<ProductItem> adapter = new ProductItemAdapter(context, R.layout.products_list, productList.products);
         listView.setAdapter(adapter);
-
-//        if (getArguments() != null) {
-//            productList = (ProductList) getArguments().getSerializable(PRODUCTS);
-//            ArrayAdapter<ProductItem> adapter = new ProductItemAdapter(context, R.layout.fragment_item_list, productList.products);
-//            listView.setAdapter(adapter);
-//        } else {
-//            Bundle args = new Bundle();
-//            args.putSerializable(PRODUCTS, productList);
-//            setArguments(args);
-//        }
-//        LoadProducts loadProducts = new LoadProducts(context, listView, this);
-//        loadProducts.execute("http://10.0.2.2:5000/pizzas");
 
         listView.setOnItemClickListener((parent, clickedView, position, id) -> {
             ProductItem clickedProduct = productList.products.get(position);
