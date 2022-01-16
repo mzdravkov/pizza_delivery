@@ -5,7 +5,6 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.io.BufferedReader;
