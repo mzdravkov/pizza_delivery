@@ -85,7 +85,7 @@ public class ProductDetailsFragment extends Fragment {
         new DownloadProductImage(view, product.id, app.productToImage).execute(product.imageUrl);
 
         HorizontalNumberPicker numberPicker = view.findViewById(R.id.number_picker);
-        numberPicker.setMin(0);
+        numberPicker.setMin(1);
         numberPicker.setMax(100);
 
         DBHandler db = new DBHandler(getContext());
@@ -101,7 +101,7 @@ public class ProductDetailsFragment extends Fragment {
             for (int i = 0; i < childrenCount; i++) {
                 CheckBox checkBox = (CheckBox) supplementsCheckboxGroup.getChildAt(i);
                 if (checkBox.isChecked()) {
-                    int supplementId = (Integer) checkBox.getTag(checkBox.getId());
+                    int supplementId = (Integer) checkBox.getTag(R.id.supplement_id);
                     Supplement supplement = supplementList.supplements
                             .stream()
                             .filter(s -> s.id == supplementId)

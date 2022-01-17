@@ -17,4 +17,5 @@
     <string name="add_to_favourites">Add to favourites</string>
     <string name="add_to_basket">Add to basket</string>
     <item type="id" name="product_id"/>
+    <item type="id" name="supplement_id"/>
 </resources>
